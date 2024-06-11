@@ -1,0 +1,21 @@
+/* Component.module.css */
+.slider {
+    --slider-track-background: #000;
+    --slider-thumb-background: #000;
+}
+
+.slider::-webkit-slider-runnable-track {
+    background: var(--slider-track-background);
+}
+
+.slider::-webkit-slider-thumb {
+    background: var(--slider-thumb-background);
+}
+
+.slider::-moz-range-track {
+    background: var(--slider-track-background);
+}
+
+.slider::-moz-range-thumb {
+    background: var(--slider-thumb-background);
+}
