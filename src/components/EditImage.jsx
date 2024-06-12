@@ -5,13 +5,14 @@ import { Button } from "./ui/button";
 import { base64ToFile } from "../lib/base64ToPng";
 import GenerateImage from "./GenerateImage";
 
-export default function EditImage({ file, removeFile, updateMaskedImage }) {
+export default function EditImage({ file, removeFile, updateMaskedImage, setUpdatedImage }) {
   const [maskImage, setMaskImage] = useState(null);
   const [mask64Base, setMask64Base] = useState(null);
   const startOver = (e, removeMask, removeFile) => {
     e.preventDefault();
     removeFile(null);
     removeMask(null);
+    setUpdatedImage(null)
   };
 
   return (
@@ -33,7 +34,7 @@ export default function EditImage({ file, removeFile, updateMaskedImage }) {
         />
       </div>
       {maskImage && (
-        <div className="">
+        <div className="relative z-20">
           <Button
             onClick={(e) => {
               startOver(e, setMaskImage, removeFile);

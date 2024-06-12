@@ -2,7 +2,7 @@ import Image from 'next/image';
 import EditImage from "../../components/EditImage";
 import ImageDrop from '../../components/ImageDrop';
 
-export function ImageEditor({userImage, setUserImage, updatedMaskedImage}) {
+export function ImageEditor({userImage, setUserImage, updatedMaskedImage, setEditedImage}) {
   return (
  <>
       {!userImage && (
@@ -12,7 +12,7 @@ export function ImageEditor({userImage, setUserImage, updatedMaskedImage}) {
         />
       )}
       {userImage && (
-        <EditImage removeFile={setUserImage} file={userImage} updateMaskedImage={updatedMaskedImage} />
+        <EditImage setUpdatedImage={setEditedImage} removeFile={setUserImage} file={userImage} updateMaskedImage={updatedMaskedImage} />
       )}
 
       <div className="absolute top-4">

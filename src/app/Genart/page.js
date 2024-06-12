@@ -1,6 +1,5 @@
 "use client";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import { Button } from "../../components/ui/button";
@@ -51,6 +50,7 @@ export default function Component() {
   // Dall-e-2 Editing image
   const [originalImage, setOriginalImage] = useState(null);
   const [maskImage, setMaskImage] = useState(null);
+  const [editedImage, setEditedImage] = useState(null);
 
   const [generatedImages, setGeneratedImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -314,7 +314,6 @@ export default function Component() {
     try {
       const res = await axios.post("/api/dall-e-2", formData);
       setEditedImage(res.data.url);
-      await handleDownload(res.data.url);
     } catch (error) {
       console.log("error", error);
     }
@@ -421,6 +420,7 @@ export default function Component() {
               <div className="relative flex flex-col space-y-2">
                 <Label>Image</Label>
                 <ImageEditor
+                  setEditedImage={setEditedImage}
                   setUserImage={setOriginalImage}
                   userImage={originalImage}
                   updatedMaskedImage={setMaskImage}
@@ -546,20 +546,21 @@ export default function Component() {
           </div>
           <Button
             className="w-full bg-black hover:bg-blue-600 text-white"
-            onClick={model === "dall-e-2" ? handleEditImage : handleCreate}
+            // onClick={model === "dall-e-2" ? handleEditImage : handleCreate}
+            onClick={() => {
+              if (isLoading) {
+                return;
+              }
+              if (model === "dall-e-2") {
+                return handleEditImage();
+              }
+              return handleCreate();
+            }}
           >
             Create
           </Button>
         </div>
-        {originalImage && (
-          <div className="w-[350px] h-[350px]">
-            <Image
-              width={300}
-              height={300}
-              src={URL.createObjectURL(originalImage)}
-            />
-          </div>
-        )}
+
         <div className="relative w-full lg:w-1/2 p-4 space-y-6 bg-white border rounded-lg lg:rounded-r-lg">
           {!isLoading && generatedImages.length > 0 && (
             <div className="flex justify-between items-center">
@@ -597,6 +598,14 @@ export default function Component() {
                   </svg>
                 )}
               </Button>
+            </div>
+          )}
+          {editedImage && (
+            <div className="flex flex-col max-w-lg ">
+              <h1 className="text-center font-bold text-xl ">
+                Generated Image
+              </h1>
+              <img src={editedImage} />
             </div>
           )}
           <Suspense
